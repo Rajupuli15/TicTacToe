@@ -41,8 +41,9 @@ public class TicTacToe {
 
     }
 
+
     public static void showBoard() {
-        System.out.println("Empty Board :");
+        System.out.println("Choose between(1-9):");
         System.out.println("");
         System.out.println("   " + board[1] + "   " + "|" + "   " + board[2] + "   " + "|" + "   " + board[3] + "   ");
         System.out.println("  -------------------");
@@ -53,7 +54,7 @@ public class TicTacToe {
 
     public static void userMove()
     {
-        System.out.println("Enter between(1-9) where you want to make a move ");
+        System.out.println("Enter between(1-9) where you want to move ");
         Scanner sc = new Scanner(System.in);
         int position = sc.nextInt();
         if(position>=1 && position <=9)
@@ -65,7 +66,7 @@ public class TicTacToe {
             }
             else
             {
-                System.out.println("Invalid move, Position is not Empty");
+                System.out.println("Invalid move, position is not empty");
             }
         }
         else
@@ -84,6 +85,7 @@ public class TicTacToe {
         allowPlayerToChoose();
         showBoard();
         userMove();
+
 
     }
 }
