@@ -7,8 +7,12 @@ public class TicTacToe {
     static char[] board = new char[10];
     private static char cross = 'X';
     private static char zero = 'O';
-    private static char player;
-    private static char computer;
+    private static char playerSymbol;
+    private static char computerSymbol;
+    private static int toss = 0;
+    private static int turn = 0;
+
+
 
 
     public static char[] creatingBoard() {
@@ -18,29 +22,29 @@ public class TicTacToe {
         return board;
     }
 
-
     private static void allowPlayerToChoose() {
-        System.out.println("Enter X or O you want to choose");
+        System.out.println("Enter the symbol X or O you want to choose");
         Scanner sc = new Scanner(System.in);
         String input = sc.nextLine();
-        player = input.charAt(0);
-        if (player == cross) {
-            player = cross;
-            computer = zero;
-            System.out.println("player : " + player);
+        playerSymbol = input.charAt(0);
+        if (playerSymbol == cross) {
+            playerSymbol = cross;
+            computerSymbol = zero;
+            System.out.println("player symbol is : " + playerSymbol);
 
-        } else if (player == zero) {
-            player = zero;
-            computer = cross;
-            System.out.println("player : " + player);
+        } else if (playerSymbol == zero) {
+            playerSymbol = zero;
+            computerSymbol = cross;
+            System.out.println("player symbol is : " + playerSymbol);
 
         } else {
-            System.out.println("Invalid Character");
+            System.out.println("Invalid input");
         }
     }
 
+
     public static void showBoard() {
-        System.out.println("Board:");
+        System.out.println(" board looks like :");
         System.out.println("");
         System.out.println("   " + board[1] + "   " + "|" + "   " + board[2] + "   " + "|" + "   " + board[3] + "   ");
         System.out.println("  -------------------");
@@ -49,46 +53,147 @@ public class TicTacToe {
         System.out.println("   " + board[7] + "   " + "|" + "   " + board[8] + "   " + "|" + "   " + board[9] + "   ");
     }
 
-
     public static void userMove() {
-        System.out.println("Enter between(1-9) where you want to move ");
+        System.out.println("Enter the empty position(between 1-9) where you wants to make the move ");
         Scanner sc = new Scanner(System.in);
         int position = sc.nextInt();
         if (position >= 1 && position <= 9)
         {
             if (board[position] == ' ') {
                 System.out.println("position  : " + position + " is empty");
-                board[position] = player;
+                board[position] = playerSymbol;
                 showBoard();
             } else {
                 System.out.println("Invalid move, position is not empty");
             }
         } else {
-            System.out.println("Invalid position");
+            System.out.println("You entered a invalid position");
         }
+        turn = 1;
+        System.out.println("Computer's turn");
+    }
+    public static void computerMove() {
+        System.out.println("Enter the empty position(between 1-9) where you wants to make the move ");
+        Scanner sc = new Scanner(System.in);
+        int position = sc.nextInt();
+        if (position >= 1 && position <= 9)
+        {
+            if (board[position] == ' ') {
+                System.out.println("position  : " + position + " is empty");
+                board[position] = computerSymbol;
+                showBoard();
+            } else {
+                System.out.println("Invalid move, position is not empty");
+            }
+        } else {
+            System.out.println("You entered a invalid position");
+        }
+        turn = 0;
+        System.out.println("Player's turn");
+
     }
 
 
     public static int doToss()
     {
-        int toss = (int) Math.floor(Math.random() * 10) % 2;
-        if(toss == 0)
+        int tossResult = (int) Math.floor(Math.random() * 10) % 2;
+        if(tossResult == 0)
         {
-            System.out.println("Player goes first");
+            System.out.println("User/Player plays first");
         }
         else
         {
-            System.out.println("Computer goes first");
+            System.out.println("Computer plays first");
         }
-        return toss;
+        return tossResult;
     }
 
+
+    public  static void turnUntilWeGetWinner()
+    {
+        char symbol = ' ';
+
+        if(toss == 0)
+        {
+            userMove();
+            turn =1;
+        }
+        else
+        {
+            computerMove();
+            turn = 0;
+        }
+
+        boolean winnerFound = false;
+        while(winnerFound != true)
+        {
+            if(turn == 0)
+            {
+                userMove();
+                symbol = playerSymbol;
+            }
+            else
+            {
+                computerMove();
+                symbol = computerSymbol;
+            }
+            winnerFound = checkWinningCondition(symbol);
+        }
+        if(symbol==playerSymbol)
+        {
+            System.out.println("Player won");
+        }
+        else
+        {
+            System.out.println("Computer won");
+        }
+    }
+
+
+
+    public  static boolean  checkWinningCondition(char symbol)
+    {
+        boolean gotWinner = false;
+        if(board[1] == symbol && board[2]==symbol &&board[3]==symbol)
+        {
+            gotWinner =true;
+        }
+        if(board[4] == symbol && board[5]==symbol &&board[6]==symbol)
+        {
+            gotWinner =true;
+        }
+        if(board[7] == symbol && board[5]==symbol &&board[9]==symbol)
+        {
+            gotWinner =true;
+        }
+        if(board[1] == symbol && board[4]==symbol &&board[7]==symbol)
+        {
+            gotWinner =true;
+        }
+        if(board[2] == symbol && board[5]==symbol &&board[8]==symbol)
+        {
+            gotWinner =true;
+        }
+        if(board[3] == symbol && board[6]==symbol &&board[9]==symbol)
+        {
+            gotWinner =true;
+        }
+        if(board[1] == symbol && board[5]==symbol &&board[9]==symbol)
+        {
+            gotWinner =true;
+        }
+        if(board[3] == symbol && board[5]==symbol &&board[7]==symbol)
+        {
+            gotWinner =true;
+        }
+        return gotWinner;
+    }
     public static void main(String args[]) {
         System.out.println("Welcome to TicTacToe Board Game");
         board = creatingBoard();
         allowPlayerToChoose();
         showBoard();
-        userMove();
-        int toss = doToss();
+        toss = doToss();
+        turnUntilWeGetWinner();
     }
 }
