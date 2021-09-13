@@ -22,6 +22,7 @@ public class TicTacToe {
         return board;
     }
 
+
     private static void allowPlayerToChoose() {
         System.out.println("Enter the symbol X or O you want to choose");
         Scanner sc = new Scanner(System.in);
@@ -53,6 +54,7 @@ public class TicTacToe {
         System.out.println("   " + board[7] + "   " + "|" + "   " + board[8] + "   " + "|" + "   " + board[9] + "   ");
     }
 
+
     public static void userMove() {
         System.out.println("Enter the empty position(between 1-9) where you wants to make the move ");
         Scanner sc = new Scanner(System.in);
@@ -73,26 +75,22 @@ public class TicTacToe {
         System.out.println("Computer's turn");
     }
     public static void computerMove() {
-        System.out.println("Enter the empty position(between 1-9) where you wants to make the move ");
-        Scanner sc = new Scanner(System.in);
-        int position = sc.nextInt();
-        if (position >= 1 && position <= 9)
+
+        int position =(int) Math.floor(Math.random() * 10) % 10;
+
+
+        while(board[position] != ' ')
         {
-            if (board[position] == ' ') {
-                System.out.println("position  : " + position + " is empty");
-                board[position] = computerSymbol;
-                showBoard();
-            } else {
-                System.out.println("Invalid move, position is not empty");
-            }
-        } else {
-            System.out.println("You entered a invalid position");
+
+            position =(int) Math.floor(Math.random() * 10) % 10;
         }
+        System.out.println("position  : " + position + " is empty");
+        board[position] = computerSymbol;
+        showBoard();
         turn = 0;
         System.out.println("Player's turn");
 
     }
-
 
     public static int doToss()
     {
@@ -137,7 +135,14 @@ public class TicTacToe {
                 computerMove();
                 symbol = computerSymbol;
             }
+
             winnerFound = checkWinningCondition(symbol);
+            if(board[1]!=' '  &&  board[2]!=' ' && board[3]!=' ' && board[4]!=' ' && board[5]!=' '&& board[6]!=' '&&
+                    board[7]!=' '&& board[8]!=' '&& board[9]!=' ' && winnerFound !=true)
+            {
+                System.out.println("It is a tie , no one won");
+                break;
+            }
         }
         if(symbol==playerSymbol)
         {
@@ -148,7 +153,6 @@ public class TicTacToe {
             System.out.println("Computer won");
         }
     }
-
 
 
     public  static boolean  checkWinningCondition(char symbol)
@@ -186,6 +190,7 @@ public class TicTacToe {
         {
             gotWinner =true;
         }
+
         return gotWinner;
     }
     public static void main(String args[]) {
